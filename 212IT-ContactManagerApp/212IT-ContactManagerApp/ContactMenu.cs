@@ -16,5 +16,18 @@ namespace _212IT_ContactManagerApp
         {
             InitializeComponent();
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            BusinessEditor business = new BusinessEditor();
+            business.Show();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            PersonalEditor personal = new PersonalEditor();
+            personal.Show();
+        }
     }
 }
