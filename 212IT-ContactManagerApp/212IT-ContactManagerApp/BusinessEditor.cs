@@ -12,23 +12,23 @@ namespace _212IT_ContactManagerApp
 {
     public partial class BusinessEditor : Form
     {
-        DbConn dbConn = new DbConn();
+        DbConn dbConn = new DbConn();//establishes connection with the database
         public BusinessEditor()
         {
-            InitializeComponent();
+            InitializeComponent();//initializes the business editor
         }
-        private void BusinessEditor_Load(object sender, EventArgs e)
+        private void BusinessEditor_Load(object sender, EventArgs e)//loads the busienss records
         {
             dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();
+            dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();//refresh functionality is the same as load
         }
-        private void btnAddNew_Click(object sender, EventArgs e)
+        private void btnAddNew_Click(object sender, EventArgs e)//events that happen on button click
         {
-            tbFname.Enabled = true;
+            tbFname.Enabled = true;//enables the text boxes
             tbLname.Enabled = true;
             tbTel.Enabled = true;
             tbEmail.Enabled = true;
@@ -40,7 +40,7 @@ namespace _212IT_ContactManagerApp
             btnDelete.Enabled = false;
             btnUpdate.Enabled = false;
             btnSaveNew.Enabled = true;
-            tbFname.Text = String.Empty;
+            tbFname.Text = String.Empty;//makes the fields empty
             tbLname.Text = String.Empty;
             tbTel.Text = String.Empty;
             tbEmail.Text = String.Empty;
@@ -51,7 +51,7 @@ namespace _212IT_ContactManagerApp
             tbBTel.Text = String.Empty;
         }
 
-        private void dGVBusinessRecords_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void dGVBusinessRecords_CellClick(object sender, DataGridViewCellEventArgs e)//event that will happen after clicking on a specific tuple on the table
         {
             int index = Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString());
             tbFname.Text = dGVBusinessRecords.SelectedCells[1].Value.ToString();
@@ -65,10 +65,10 @@ namespace _212IT_ContactManagerApp
             tbBTel.Text = dGVBusinessRecords.SelectedCells[9].Value.ToString();
         }
 
-        private void btnSaveNew_Click(object sender, EventArgs e)
+        private void btnSaveNew_Click(object sender, EventArgs e)//save new button fuctionality and settings related to it
         {
-            BusinessContact businessContact = new BusinessContact();
-            businessContact.contactFname = tbFname.Text;
+            BusinessContact businessContact = new BusinessContact();//creates a new business contact record
+            businessContact.contactFname = tbFname.Text;//converts the text to information stored
             businessContact.contactLname = tbLname.Text;
             businessContact.contactTel = tbTel.Text;
             businessContact.contactEmail = tbEmail.Text;
@@ -77,8 +77,8 @@ namespace _212IT_ContactManagerApp
             businessContact.contactCity = tbCity.Text;
             businessContact.contactPostcode = tbPost.Text;
             businessContact.contactBusinessTel = tbBTel.Text;
-            dbConn.InsertBusiness(businessContact);
-            tbFname.Enabled = false;
+            dbConn.InsertBusiness(businessContact);//calls the inserbusiness comamnd from dbconn.cs
+            tbFname.Enabled = false;//disables the text boxes after clicking
             tbLname.Enabled = false;
             tbTel.Enabled = false;
             tbEmail.Enabled = false;
@@ -93,7 +93,7 @@ namespace _212IT_ContactManagerApp
             dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e)
+        private void btnUpdate_Click(object sender, EventArgs e)//pretty much just enables text boxes and buttons, making the functionality clear
         {
             tbFname.Enabled = true;
             tbLname.Enabled = true;
@@ -110,12 +110,12 @@ namespace _212IT_ContactManagerApp
             btnAddNew.Enabled = false;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)//on clicking save
         {
-            int index = Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString());
+            int index = Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString());//creates an id
             BusinessContact businessContact = new BusinessContact();
-            businessContact.ContactID = index;
-            businessContact.contactFname = tbFname.Text;
+            businessContact.ContactID = index;//the value taken from index
+            businessContact.contactFname = tbFname.Text;//text field values
             businessContact.contactLname = tbLname.Text;
             businessContact.contactTel = tbTel.Text;
             businessContact.contactEmail = tbEmail.Text;
@@ -124,9 +124,9 @@ namespace _212IT_ContactManagerApp
             businessContact.contactCity = tbCity.Text;
             businessContact.contactPostcode = tbPost.Text;
             businessContact.contactBusinessTel = tbBTel.Text;
-            dbConn.UpdateBusiness(businessContact);
-            dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();
-            tbFname.Enabled = false;
+            dbConn.UpdateBusiness(businessContact);//command that is run upon collecting the needed information
+            dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();//refreshes the table with records
+            tbFname.Enabled = false;//going back to the defaulot settings
             tbLname.Enabled = false;
             tbTel.Enabled = false;
             tbEmail.Enabled = false;
@@ -140,19 +140,19 @@ namespace _212IT_ContactManagerApp
             btnSave.Enabled = false;
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)//delete fuction
         {
-            string message = "Are you sure you want to delete?";
-            string caption = "Do you want to delete the content with the record with ID of " + Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString());
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            string message = "Are you sure you want to delete?";//safety message
+            string caption = "Do you want to delete the content with the record with ID of " + Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString());//tells the user which record will be  deleted
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;//yes no options
             DialogResult result;
 
             result = MessageBox.Show(message, caption, buttons);
             if (result == DialogResult.Yes)
             {
-                dbConn.DeleteBusiness(Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString()));
+                dbConn.DeleteBusiness(Int32.Parse(dGVBusinessRecords.SelectedCells[0].Value.ToString()));//after the user presses yes the delete busienss command will be executed
 
-                dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();
+                dGVBusinessRecords.DataSource = dbConn.GetAllBusiness();//refereshes the page
             }
         }
     }

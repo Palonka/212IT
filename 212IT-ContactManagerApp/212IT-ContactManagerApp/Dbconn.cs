@@ -11,20 +11,21 @@ namespace _212IT_ContactManagerApp
 {
     public class DbConn
     {
+        //all database information is here, specifies where to look for it as well as what credentials to use
         private string connString = "Server=db212it.cxoyanmj9kow.us-east-1.rds.amazonaws.com; User ID=admin;Password=Coventry1!;Database=HarrisContactDB";
 
-        public DataTable GetAllPersonal()
+        public DataTable GetAllPersonal()// this specifies how the getAllPErsonal method will work
         {
             using (var conn = new MySqlConnection(connString))
             {
-                conn.Open();
-                DataTable personalContactDt = new DataTable();
+                conn.Open();//opens connection with the db
+                DataTable personalContactDt = new DataTable();//creates a table that shows items
                 List<PersonalContact> personalContacts = new List<PersonalContact>();
-                using (var cmd = new MySqlCommand("CALL selectAllPersonal();", conn))
+                using (var cmd = new MySqlCommand("CALL selectAllPersonal();", conn))// uses a saved command (from the db)
                 using (var reader = cmd.ExecuteReader())
                     while (reader.Read())
                     {
-                        personalContacts.Add(new PersonalContact
+                        personalContacts.Add(new PersonalContact //gets the information and creates a table
                         {
                             ContactID = reader.GetInt32(0),
                             contactFname = reader.GetString(1),
@@ -38,7 +39,7 @@ namespace _212IT_ContactManagerApp
                             contactHomeTel = reader.GetString(9),
                         });
                     }
-                personalContactDt.Columns.Add("ContactID");
+                personalContactDt.Columns.Add("ContactID");// this will be ho the columns will be named
                 personalContactDt.Columns.Add("Contact First Name");
                 personalContactDt.Columns.Add("Contact Last Name");
                 personalContactDt.Columns.Add("Contact Telephone");
@@ -53,7 +54,7 @@ namespace _212IT_ContactManagerApp
                 {
                     var row = personalContactDt.NewRow();
 
-                    row["ContactID"] = item.ContactID;
+                    row["ContactID"] = item.ContactID;//assignment of data to specific rows on the table
                     row["Contact First Name"] = item.contactFname;
                     row["Contact Last Name"] = item.contactLname;
                     row["Contact Telephone"] = item.contactTel;
@@ -69,7 +70,7 @@ namespace _212IT_ContactManagerApp
                 return personalContactDt;
             }
         }
-        public DataTable GetAllBusiness()
+        public DataTable GetAllBusiness()// different command same as before
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -125,16 +126,16 @@ namespace _212IT_ContactManagerApp
                 return businessContactDt;
             }
         }
-        public async void InsertPersonal(PersonalContact personalContact)
+        public async void InsertPersonal(PersonalContact personalContact)//another one
         {
             using (var conn = new MySqlConnection(connString))
             {
-                await conn.OpenAsync();
+                await conn.OpenAsync();//asyncronous code for better performance
                 using (var cmd = new MySqlCommand())
                 {
-                    cmd.Connection = conn;
-                    cmd.CommandText = "CALL INSERTPersonal(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9);";
-                    cmd.Parameters.AddWithValue("p1", personalContact.contactFname);
+                    cmd.Connection = conn;//opens connection
+                    cmd.CommandText = "CALL INSERTPersonal(@p1,@p2,@p3,@p4,@p5,@p6,@p7,@p8,@p9);";//uses the stored procedure
+                    cmd.Parameters.AddWithValue("p1", personalContact.contactFname);//explains assignment od information
                     cmd.Parameters.AddWithValue("p2", personalContact.contactLname);
                     cmd.Parameters.AddWithValue("p3", personalContact.contactTel);
                     cmd.Parameters.AddWithValue("p4", personalContact.contactEmail);
@@ -143,12 +144,12 @@ namespace _212IT_ContactManagerApp
                     cmd.Parameters.AddWithValue("p7", personalContact.contactCity);
                     cmd.Parameters.AddWithValue("p8", personalContact.contactPostcode);
                     cmd.Parameters.AddWithValue("p9", personalContact.contactHomeTel);
-                    await cmd.ExecuteNonQueryAsync();
+                    await cmd.ExecuteNonQueryAsync();//makes the query run
                 }
 
             }
         }
-        public async void InsertBusiness(BusinessContact businessContact)
+        public async void InsertBusiness(BusinessContact businessContact)//insert business command
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -171,7 +172,7 @@ namespace _212IT_ContactManagerApp
 
             }
         }
-        public async void UpdatePersonal(PersonalContact personalContact)
+        public async void UpdatePersonal(PersonalContact personalContact)//update a record
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -195,7 +196,7 @@ namespace _212IT_ContactManagerApp
 
             }
         }
-        public async void UpdateBusiness(BusinessContact businessContact)
+        public async void UpdateBusiness(BusinessContact businessContact)//update a record
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -219,7 +220,7 @@ namespace _212IT_ContactManagerApp
 
             }
         }
-        public async void DeletePersonal(int id)
+        public async void DeletePersonal(int id)//delete a personal record
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -228,13 +229,13 @@ namespace _212IT_ContactManagerApp
                 {
                     cmd.Connection = conn;
                     cmd.CommandText = "CALL deletePersonal(@p0);";
-                    cmd.Parameters.AddWithValue("p0", id);
+                    cmd.Parameters.AddWithValue("p0", id);//only based on ID
                     await cmd.ExecuteNonQueryAsync();
                 }
 
             }
         }
-        public async void DeleteBusiness(int id)
+        public async void DeleteBusiness(int id)//delete a business record
         {
             using (var conn = new MySqlConnection(connString))
             {
@@ -243,7 +244,7 @@ namespace _212IT_ContactManagerApp
                 {
                     cmd.Connection = conn;
                     cmd.CommandText = "CALL deleteBusiness(@p0);";
-                    cmd.Parameters.AddWithValue("p0", id);
+                    cmd.Parameters.AddWithValue("p0", id);//only based on ID
                     await cmd.ExecuteNonQueryAsync();
                 }
 

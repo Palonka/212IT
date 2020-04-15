@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace _212IT_ContactManagerApp
 {
 
-        public class BusinessContact : Contact
+        public class BusinessContact : Contact// businesscontact class inherits most of its attributes form the contact class
         {
-            public string contactBusinessTel { get; set; }
+            public string contactBusinessTel { get; set; }// its the only addition
         }
 
 }

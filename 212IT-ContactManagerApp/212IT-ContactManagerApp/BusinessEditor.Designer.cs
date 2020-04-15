@@ -2,6 +2,7 @@
 {
     partial class BusinessEditor
     {
+        // resoponsible for the code behind the looks of the files
         /// <summary>
         /// Required designer variable.
         /// </summary>

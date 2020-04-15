@@ -16,7 +16,7 @@ namespace _212IT_ContactManagerApp
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new ContactMenu());
+            Application.Run(new ContactMenu());//runs the application
         }
     }
 }
